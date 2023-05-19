@@ -1,9 +1,24 @@
 import React from 'react';
 import Header from '../components/Header';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
+import CardAlbum from '../components/CardAlbum';
 
 class Search extends React.Component {
   state = {
     searchText: '',
+    artists: [],
+    artistName: '',
+  };
+
+  handleClick = async (event) => {
+    event.preventDefault();
+    const { searchText } = this.state;
+    const artists = await searchAlbumsAPI(searchText);
+    this.setState({
+      artists,
+      artistName: searchText,
+      searchText: '',
+    });
   };
 
   handleChange = (event) => {
@@ -14,9 +29,18 @@ class Search extends React.Component {
   };
 
   render() {
-    const { searchText } = this.state;
+    const { searchText, artists, artistName } = this.state;
     const n2 = 2;
     const isDisabled = searchText.length < n2;
+    const albumList = artists.length > 0 && artists.map((artist) => (
+      <CardAlbum
+        key={ artist.collectionId }
+        collectionName={ artist.collectionName }
+        collectionId={ artist.collectionId }
+        artworkUrl100={ artist.artworkUrl100 }
+        artistName={ artist.artistName }
+      />
+    ));
     return (
       <div data-testid="page-search">
         <Header />
@@ -34,10 +58,26 @@ class Search extends React.Component {
             name="searchBtn"
             data-testid="search-artist-button"
             disabled={ isDisabled }
+            onClick={ this.handleClick }
           >
             Pesquisar
           </button>
         </form>
+        {
+          artistName !== ''
+            && (artists.length > 0 ? (
+              <div>
+                <p>
+                  Resultado de álbuns de:
+                  {' '}
+                  {artistName}
+                </p>
+                {albumList}
+              </div>
+            )
+              : <p>Nenhum álbum foi encontrado</p>)
+        }
+
       </div>
     );
   }
