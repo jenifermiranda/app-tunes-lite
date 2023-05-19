@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 class CardAlbum extends React.Component {
   render() {
     const { collectionName, collectionId, artworkUrl100, artistName } = this.props;
-    console.log(`/album/${collectionId}`);
     return (
       <div>
         <img src={ artworkUrl100 } alt={ collectionName } />
