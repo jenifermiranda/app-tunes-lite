@@ -9,6 +9,19 @@ class MusicCard extends React.Component {
     loading: false,
   };
 
+  componentDidMount() {
+    this.isFavorite();
+  }
+
+  isFavorite = () => {
+    const { favorites, trackId } = this.props;
+    const isFav = favorites.some((fav) => fav.trackId === trackId);
+    console.log(favorites);
+    this.setState({
+      isChecked: isFav,
+    });
+  };
+
   handleCkecked = async ({ target: { checked } }) => {
     this.setState({ loading: true });
     const { trackId } = this.props;
@@ -64,6 +77,7 @@ MusicCard.propTypes = {
   name: PropTypes.string.isRequired,
   audio: PropTypes.string.isRequired,
   trackId: PropTypes.number.isRequired,
+
 };
 
 export default MusicCard;

@@ -4,12 +4,14 @@ import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
 import Loading from './Loading';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class Album extends React.Component {
   state = {
     artists: [],
     songs: [],
     loading: true,
+    favorites: [],
   };
 
   async componentDidMount() {
@@ -21,15 +23,27 @@ class Album extends React.Component {
       songs: artists.filter((song) => song.wrapperType !== 'collection'),
       loading: false,
     });
+
+    this.getFavorites();
   }
 
+  getFavorites = async () => {
+    this.setState({ loading: true });
+    const favorites = await getFavoriteSongs();
+    this.setState({
+      favorites,
+      loading: false,
+    });
+  };
+
   render() {
-    const { artists, songs, loading } = this.state;
+    const { artists, songs, loading, favorites } = this.state;
     const songsList = songs.map((song) => (
       <MusicCard
         key={ song.trackNumber }
         name={ song.trackName }
         audio={ song.previewUrl }
+        favorites={ favorites }
         trackId={ song.trackId }
       />
     ));
