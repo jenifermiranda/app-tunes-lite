@@ -20,6 +20,7 @@ class MusicCard extends React.Component {
     this.setState({
       isChecked: isFav,
     });
+    console.log(favorites);
   };
 
   handleCkecked = async ({ target: { checked } }) => {
@@ -77,7 +78,7 @@ MusicCard.propTypes = {
   name: PropTypes.string.isRequired,
   audio: PropTypes.string.isRequired,
   trackId: PropTypes.number.isRequired,
-
+  favorites: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
 export default MusicCard;
