@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createUser } from '../services/userAPI';
 import Loading from './Loading';
+import './Login.css';
 
 class Login extends React.Component {
   state = {
@@ -31,9 +32,12 @@ class Login extends React.Component {
     const n3 = 3;
     const isDisabled = nameLogin.length < n3;
     return (
-      <div data-testid="page-login">
+      <div
+        data-testid="page-login"
+        className="container-login"
+      >
         { loading ? <Loading /> : (
-          <form>
+          <form className="form-login">
             Login
             <input
               type="text"
@@ -41,7 +45,7 @@ class Login extends React.Component {
               value={ nameLogin }
               onChange={ this.handleChange }
               data-testid="login-name-input"
-              placeholder="Nome"
+              placeholder="qual é o seu nome?"
             />
             <button
               type="button"
